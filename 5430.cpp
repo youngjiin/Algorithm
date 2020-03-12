@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
+#include <sstream>
 using namespace std;
 
 int main(){
@@ -14,25 +15,32 @@ int main(){
         cin >> cmd;
         cin >> arrlen;
         cin >> arr;
-        for(int i=0; i<arr.size(); i++){
-            if(arr[i]!='[' || arr[i]!=']' || arr[i]!=',' || arr[i]!=' '){
-                int a = (int)arr[i];
-                tokens.push_front(a);
-            }
-        }
+		string a="";
+		for(int i=0; i<arr.size(); i++){
+			if(arr[i]!=',' && arr[i]!='[' && arr[i]!=']'){
+				a += arr[i];
+			}
+			else{
+				if(a!=""){
+					tokens.push_front(stoi(a));
+					//cout << tokens.front() <<endl;
+				}
+				a = "";
+			}
+		}	
         bool error = false;
         deque<int> tokens2;
+        int Rcount =0;
+
         for(int i=0; i<cmd.size(); i++){
             if(cmd[i]=='R'){
-                for(int j=0; j<tokens.size(); j++){
-                    int a = tokens.back();
-                    tokens2.pop_back();
-                    tokens2.push_back(a);
-                }
-                tokens = tokens2;
+				Rcount++;
             }else{
                 if(!tokens.empty()){
-                    tokens.pop_front();
+                    if(Rcount%2==0)
+                        tokens.pop_back();
+                    else
+                        tokens.pop_front();
                 }
                 else{
                     cout << "error" <<endl;
@@ -43,15 +51,23 @@ int main(){
         }
         if(!error){
             cout << "[" ;
-            for(int i=0; i<tokens.size(); i++){
-				int a = tokens.front();
-                cout << a;
-				tokens.pop_front();
-                if(i!=tokens.size()){
+			int s = tokens.size();
+            for(int i=0; i<s; i++){
+                if(Rcount%2 == 0){
+                    int a = tokens.back();
+                    cout << a;
+				    tokens.pop_back();
+                }
+				else{
+                    int a = tokens.front();
+                    cout << a;
+				    tokens.pop_front();
+                }
+                if(i!=s-1){
                     cout <<",";
                 }
             }
-            cout << "]" ;
+            cout << "]" <<endl;
         }
     }
     return 0;
