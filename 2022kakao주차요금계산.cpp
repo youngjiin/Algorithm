@@ -7,7 +7,7 @@
 using namespace std;
 
 int get_ftime(int In_htime, int In_mtime, int h_time, int m_time){
-	if(m_time - In_mtime < 0){
+    if(m_time - In_mtime < 0){
         h_time--;
         m_time+=60;
     }
@@ -16,6 +16,7 @@ int get_ftime(int In_htime, int In_mtime, int h_time, int m_time){
     int f_time = du_h*60 + du_m;
     return f_time;
 }
+
 vector<int> solution(vector<int> fees, vector<string> records) {
     vector<int> answer;
     //가격 계산 : 기본요금 + ((총 시간 - 기본 시간) / 단위 시간)*단위 요금
